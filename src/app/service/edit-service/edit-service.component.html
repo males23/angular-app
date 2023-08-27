@@ -1,0 +1,22 @@
+<!-- On definit le titre -->
+<!-- On indique qu'on est sur la page permettamt d'editer
+et on affiche son nom, je mets "?" 
+pour ne rien afficher dedans -->
+<h2 class="center">Editer {{ service?.name }}</h2>
+
+<!-- On va  afficher l'image que
+s'il y a un service avec *ngIf -->
+<p *ngIf="service" class="center">
+    <img [src]="service.picture">
+</p>
+
+<!-- On ajoute le formulaire service deja cree
+Donc on prend le selecteur directement, Ce formulaire 
+a une entree @Input() service: Service = new Service; 
+Dans le cas ou j'ai un service, je vais construire ce formulaire
+On pouvait aussi creer le formulaire directement ici 
+Mais cela n'est productif, on prefere le decoupage -->
+<app-service-form 
+*ngIf="service" [service]="service">
+</app-service-form>
+

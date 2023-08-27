@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="row">
+
+      <!--Affichage du champs de recherche-->
+      <app-search-service></app-search-service>
+      
+      <div *ngFor="let service of serviceList" class="col m4 s6">
+        <!--on connecte notre direcctive via son nom de son selector serviceBorderCard-->
+        <!--On relie le clic de service ici-->
+        <div (click)="goToService(service)" class="card horizontal" appBorderCard>
+          
+          <div class="card-image">
+            <img [src]="service.picture" />
+          </div>
+          <div class="card-stacked">
+            <div class="card-content">
+              <p>{{ service.name }}</p>
+              <p><small>{{ service.created | date: 'dd/MM/yyyy' }}</small></p>
+            <span 
+            *ngFor="let type of service.types" 
+            class="{{ type | serviceTypeColor }}" 
+            >
+              {{ type }}
+            </span>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Ajouter un lien vers le formulaire d'ajout -->
+<a 
+class="btn-floating btn-large waves-effect waves-light red z-depth-3"
+style="position: fixed; bottom: 25px; right: 25px;"
+routerLink="/service/add">
+
+<!-- Ajouter un emoji + -->
+＋
+</a>
+
+

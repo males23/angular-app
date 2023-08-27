@@ -1,0 +1,59 @@
+<div *ngIf="service" class="row">
+    <div class="col s12 m8 offset-m2">
+    <h2 class="header center">{{ service.name }}</h2>
+    <div class="card horizontal hoverable">
+      <div class="card-image">
+        <img [src]="service.picture">
+      </div>
+      <div class="card-stacked">
+        <div class="card-content">
+          <table class="bordered striped">
+            <tbody>
+              <tr>
+                <td>Nom</td>
+                <td><strong>{{ service.name }}</strong></td>
+              </tr>
+              <tr>
+                <td>Quantité</td>
+                <td><strong>{{ service.hp }}</strong></td>
+              </tr>
+              <tr>
+                <td>Couleurs</td>
+                <td><strong>{{ service.cp }}</strong></td>
+              </tr>
+              <tr>
+                <td>Types</td>
+                <td>
+                  <span *ngFor="let type of service.types" class="{{ type | serviceTypeColor }}">{{ type }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Date de création</td>
+                <td><em>{{ service.created | date:"dd/MM/yyyy" }}</em></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-action">
+
+        <!--On va rajouter le bouton Editer-->
+        <a (click)="goToServiceList()">Retour</a>
+
+        <!--On va rajouter le bouton Editer-->
+        <a (click)="goToEditService(service)">Éditer</a>
+
+        <!--On va rajouter le bouton Supprimer-->
+        <a (click)="deleteService(service)">Supprimer</a>
+
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    <h4 *ngIf="!service" class="center">
+       <!--icone de chargement loader-->
+       <app-loader></app-loader>
+    </h4>
+    
+    
+  

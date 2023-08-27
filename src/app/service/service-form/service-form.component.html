@@ -1,0 +1,126 @@
+<!-- Declaration du formulaire avec les classes de 
+la librairie materialize -->
+
+<!-- Lorsque l'user declenche le formulaire ngSubmit, On implemente 
+la methode onSubmit du .ts et #serviceForm permet d'avoir une variable 
+referencee vers le DOM, puis #serviceForm="ngForm" on attribue 
+le resultat de la directive ngForm representant le formulaire globalement -->
+<form *ngIf="service" (ngSubmit)="onSubmit()" #serviceForm="ngForm">
+    <div class="row">
+      <div class="col s8 offset-s2">
+        <div class="card-panel">
+    
+<!-- Service name -->
+          <div class="form-group">
+            <label for="name">Nom</label>
+<!-- Declaration de champs avec la directive ngModel qui represente 
+un champ du formulaire les regles de validation Html5  required et 
+pattern, donc required permet de rendre un champ obligatoire et pattern
+definit une expression reguliere pour valider un champs ici 1 a 25 
+caracteres, enfin (^...$) veut dire uniquement --> 
+            <input type="text" class="form-control" id="name"
+                    required
+                    pattern="^[a-zA-Z0-9àéèç]{1,25}$"
+                   [(ngModel)]="service.name" name="name"
+                   #name="ngModel"> 
+<!-- [(ngModel)] Laison de donnee bidirectionnelle permet la 
+synchronisation entre composant et template
+#name="ngModel" on l'attribu a une variable du template -->
+
+<!-- Cacher ou Masquer l'element, si le champs est valide on le cache
+Sinon si le champs est pristine donc non touche, on affiche le message d'erreur--> 
+            <div [hidden]="name.valid || name.pristine"
+                  class="card-panel red accent-1">
+                  Le nom du service est requis (1-25).
+            </div>
+          </div>
+
+<!-- Service picture, Champs pour pouvoir modifier l'image lors de l'ajout du service -->
+            <div *ngIf="isAddForm" class="form-group">
+              <label for="picture">Image</label>
+              <input type="url" class="form-control" id="picture"
+              required
+              [(ngModel)]="service.picture" name="picture"
+              #picture="ngModel">
+              <div [hidden]="picture.valid || picture.pristine"
+              class="card-panel red accent-1">
+              L'image du service est requise.
+            </div>
+          </div>
+
+<!-- Service hp -->
+          <div class="form-group">
+            <label for="hp">Quantité</label>
+            <input type="number" class="form-control" id="hp"
+                    required
+                    pattern="^[0-9]{1,3}$"
+                   [(ngModel)]="service.hp" name="hp"
+                   #hp="ngModel">
+             <div [hidden]="hp.valid || hp.pristine"
+                   class="card-panel red accent-1">
+                   Le nombre de service est requis (0-999).
+             </div>
+          </div>
+    
+<!-- Service cp -->
+          <div class="form-group">
+            <label for="cp">Couleur</label>
+            <input type="number" class="form-control" id="cp"
+                    required
+                    pattern="^[0-9]{1,2}$"
+                   [(ngModel)]="service.cp" name="cp"
+                   #cp="ngModel">
+             <div [hidden]="cp.valid || cp.pristine"
+                   class="card-panel red accent-1">
+                   Le nombre de couleur  du service est requis (0-99).
+             </div>
+          </div>
+    
+<!-- Service types -->
+<!-- On reprend la liste de tous les types -->
+          <form class="form-group">
+            <label for="types">Types</label>
+            <p *ngFor="let type of types">
+              <label>
+<!-- Afficher tous les types a cocher, la valeur du type, cocher avec 
+hasType, puis desactiver toutes les cases si non valide, (change) ecoute 
+la case cochee et son type, enfin le span colorie notre formulaire -->
+                <input type="checkbox"
+                  class="filled-in"
+                  id="{{ type }}"
+                  [value]="type"
+                  [checked]="hasType(type)"
+                  [disabled]="!isTypesValid(type)"
+                  (change)="selectType($event, type)"/>
+                <span [attr.for]="type">
+                  <div class="{{ type | serviceTypeColor }}">
+                    {{ type }}
+                  </div>
+                </span>
+              </label>
+            </p>
+          </form>
+
+<!-- Submit button -->
+          <div class="divider"></div>
+          <div class="section center">
+<!-- Bouton dee soumission dans une balise form
+disabled, bouton en permanence desactive si tout n'est pas valide -->
+            <button type="submit"
+              class="waves-effect waves-light btn"
+              [disabled]="!serviceForm.form.valid">
+              Valider</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+<!-- Si l'user rentre une infos invalide -->
+  <h4 *ngIf="!service" class="center">
+    <!--icone de chargement loader-->
+    <app-loader></app-loader>
+   </h4>
+
+  
+   
